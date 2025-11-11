@@ -17,15 +17,21 @@ const ProfileForm = () => {
 
     // 🧠 Зареждаме данни за профила и изтегления колега
     useEffect(() => {
-        if (!user?.email) return;
+        if (!user?.email || !user?.name) return;
 
         const loadData = async () => {
             setLoading(true);
             try {
-                // 1️⃣ Зареждаме people.json
                 const peopleRes = await fetch('http://localhost:5000/api/people');
                 const people = await peopleRes.json();
-                const existing = people.find(p => p.email === user.email);
+
+                // 1️⃣ Зареждаме профила
+                const existing = people.find(
+                    p =>
+                        p.email.trim().toLowerCase() === user.email.trim().toLowerCase() &&
+                        p.name.trim().toLowerCase() === user.name.trim().toLowerCase()
+                );
+
                 if (existing) {
                     setProfileData({
                         preferredGift: existing.preferredGift || '',
@@ -35,11 +41,22 @@ const ProfileForm = () => {
                     setUser(prev => ({ ...prev, ...existing }));
                 }
 
-                // 2️⃣ Проверяваме дали има изтеглен колега
+                // 2️⃣ Зареждаме изтегления колега
                 const coupleRes = await fetch(`http://localhost:5000/api/get-coupled/${user.email}`);
                 const coupleData = await coupleRes.json();
-                if (coupleData.found) {
-                    setDrawResult(coupleData.receiver);
+
+                if (coupleData.found && coupleData.receiver) {
+                    const receiverFull = people.find(
+                        p => p.email.trim().toLowerCase() === coupleData.receiver.email.trim().toLowerCase()
+                    );
+
+                    setDrawResult({
+                        ...coupleData.receiver,
+                        photoUrl: receiverFull?.photoUrl || null,
+                        preferredGift: receiverFull?.preferredGift || '',
+                        hobbies: receiverFull?.hobbies || '',
+                        interests: receiverFull?.interests || '',
+                    });
                 } else {
                     setDrawResult(null);
                 }
@@ -51,7 +68,8 @@ const ProfileForm = () => {
         };
 
         loadData();
-    }, [user?.email, setUser]);
+    }, [user?.email, user?.name, setUser]);
+
 
     // 🖊️ Промяна в инпутите
     const handleChange = (e) => {
@@ -66,14 +84,20 @@ const ProfileForm = () => {
         const updatedUser = { ...user, ...profileData };
         try {
             setLoading(true);
-            await fetch('http://localhost:5000/api/update-person', {
+            const res = await fetch('http://localhost:5000/api/update-person', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedUser)
             });
+            if (!res.ok) throw new Error('Грешка при запис');
 
-            setUser(updatedUser);
-            alert('✅ Профилът е запазен успешно!');
+            const savedUser = await res.json();
+            setUser(savedUser.user || updatedUser);
+            setProfileData({
+                preferredGift: savedUser.user.preferredGift || '',
+                hobbies: savedUser.user.hobbies || '',
+                interests: savedUser.user.interests || ''
+            });
             setIsEditing(false);
         } catch (err) {
             console.error(err);
@@ -82,6 +106,7 @@ const ProfileForm = () => {
             setLoading(false);
         }
     };
+
 
     // 🚪 Излизане от акаунта
     const handleLogout = () => {
@@ -94,10 +119,11 @@ const ProfileForm = () => {
         return <h3>⚠️ Моля, влез в системата първо!</h3>;
     }
 
+    const placeholderImg = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; // 👤 Стандартна иконка
+
     return (
         <div className="profile-form-container">
             <div className="profile-header">
-                <h2>👤 Профил на {user.name}</h2>
                 <button className="logout-button" onClick={handleLogout}>🚪 Изход</button>
             </div>
 
@@ -105,8 +131,16 @@ const ProfileForm = () => {
 
             {/* 🧾 МОЯТ ПРОФИЛ */}
             <section className="profile-section">
-                <h3>🧾 Моите данни</h3>
-
+                <h3> Моите данни</h3>
+                <img
+                    src={user.photoUrl || placeholderImg}
+                    alt={user.name}
+                    className="profile-photo"
+                />
+                <div>
+                    <h2>👤 {user.name}</h2>
+                    <p className="email-text">{user.email}</p>
+                </div>
                 {!isEditing ? (
                     <div>
                         <p><strong>Предпочитан подарък:</strong> {profileData.preferredGift || '—'}</p>
@@ -157,8 +191,14 @@ const ProfileForm = () => {
 
                 {drawResult ? (
                     <div className="result-card">
-                        <p><strong>Име:</strong> {drawResult.name}</p>
-                        <p><strong>Имейл:</strong> {drawResult.email}</p>
+                        <img
+                            src={drawResult.photoUrl || placeholderImg}
+                            alt={drawResult.name}
+                            className="profile-photo-small"
+                        />
+                        <h3>{drawResult.name}</h3>
+                        <p>{drawResult.email}</p>
+                        <p><strong>Предпочитан подарък:</strong> {drawResult.preferredGift || 'няма въведени'}</p>
                         <p><strong>Интереси:</strong> {drawResult.interests || 'няма въведени'}</p>
                         <p><strong>Хобита:</strong> {drawResult.hobbies || 'няма въведени'}</p>
                     </div>

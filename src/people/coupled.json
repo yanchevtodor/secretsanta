@@ -1,77 +1,14 @@
 [
   {
     "giver": {
-      "name": "Светослав Динев",
-      "email": "dinev@imotipremier.com",
-      "hobbies": "asas",
-      "interests": "asasa"
-    },
-    "receiver": {
-      "name": "Борис Борисов",
-      "email": "borisov@imotipremier.com",
-      "preferredGift": "",
-      "hobbies": "",
-      "interests": ""
-    }
-  },
-  {
-    "giver": {
       "name": "Тодор Янчев",
       "email": "yanchev@imotipremier.com",
-      "hobbies": "асфафаф",
-      "interests": "фасфасфа"
+      "photoUrl": "https://imotipremier.com/wp-content/uploads/todor-yanchev-broker-na-nedvijimi-imoti1005374-wf.jpg"
     },
     "receiver": {
-      "name": "Николай Георгиев",
-      "email": "n.georgiev@imotipremier.com",
-      "preferredGift": "",
-      "hobbies": "",
-      "interests": ""
-    }
-  },
-  {
-    "giver": {
-      "name": "Николай Георгиев",
-      "email": "n.georgiev@imotipremier.com",
-      "hobbies": "",
-      "interests": ""
-    },
-    "receiver": {
-      "name": "Йордан Катрев",
-      "email": "katrev@imotipremier.com",
-      "preferredGift": "",
-      "hobbies": "",
-      "interests": ""
-    }
-  },
-  {
-    "giver": {
-      "name": "Йордан Катрев",
-      "email": "katrev@imotipremier.com",
-      "hobbies": "сфафасф",
-      "interests": "афасфасфсаф"
-    },
-    "receiver": {
-      "name": "Станислав Колев",
-      "email": "s.kolev@imotipremier.com",
-      "preferredGift": "",
-      "hobbies": "",
-      "interests": ""
-    }
-  },
-  {
-    "giver": {
-      "name": "Борис Борисов",
-      "email": "borisov@imotipremier.com",
-      "hobbies": "safasf",
-      "interests": "asfafaf"
-    },
-    "receiver": {
-      "name": "Марин Христов",
-      "email": "m.hristov@imotipremier.com",
-      "preferredGift": "",
-      "hobbies": "",
-      "interests": ""
+      "name": "Радослава Йорданова",
+      "email": "r.yordanova@imotipremier.com",
+      "photoUrl": "https://imotipremier.com/wp-content/uploads/radoslava-yordanova-broker-na-nedvijimi-imoti1005382-wf.jpg"
     }
   }
 ]

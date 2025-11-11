@@ -2,32 +2,34 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../UserContext';
 import { useNavigate } from 'react-router-dom';
 import peopleData from '../people/people.json';
-import coupledData from '../people/coupled.json';
 
 const RandomPicker = () => {
-    const { user } = useContext(UserContext);
+    const { user, setUser, loadingUser } = useContext(UserContext);
     const navigate = useNavigate();
+
     const [people, setPeople] = useState([]);
     const [coupled, setCoupled] = useState([]);
     const [randomColleague, setRandomColleague] = useState(null);
     const [isPicking, setIsPicking] = useState(false);
 
+    // Зареждаме хората
     useEffect(() => {
-        // Зареждаме локалните данни
         setPeople(peopleData);
-        setCoupled(coupledData);
+        setCoupled([]); // Ако имаш API, може да fetch-неш тук
     }, []);
 
-    const pickRandomColleague = () => {
-        if (!user) {
-            alert('Моля, влез с акаунта си първо!');
-            return;
+    // Redirect към login ако няма user
+    useEffect(() => {
+        if (!loadingUser && !user) {
+            navigate('/login');
         }
+    }, [user, loadingUser, navigate]);
 
-        // Вземаме имейлите на вече избраните
+    const pickRandomColleague = async () => {
+        if (!user) return;
+
         const alreadyPickedEmails = coupled.map(c => c.receiver.email);
 
-        // Филтрираме: себе си и вече изтеглените
         const availablePeople = people.filter(
             p => p.email !== user.email && !alreadyPickedEmails.includes(p.email)
         );
@@ -39,27 +41,56 @@ const RandomPicker = () => {
 
         setIsPicking(true);
 
-        setTimeout(() => {
+        setTimeout(async () => {
             const randomIndex = Math.floor(Math.random() * availablePeople.length);
             const selected = availablePeople[randomIndex];
+
+            // Записваме само името и имейла
+            const pair = {
+                giver: {
+                    name: user.name,
+                    email: user.email,
+                    photoUrl: user.photoUrl
+                },
+                receiver: {
+                    name: selected.name,
+                    email: selected.email,
+                    photoUrl: selected.photoUrl
+                }
+            };
+
+            try {
+                await fetch('http://localhost:5000/api/save-coupled', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pair })
+                });
+            } catch (err) {
+                console.error('Грешка при записа на двойката:', err);
+            }
+
+            // Обновяваме локалния state
+            setCoupled(prev => [...prev, pair]);
             setRandomColleague(selected);
+
+            // Обновяваме user с последния избран колега (само името и имейла)
+            setUser(prev => ({
+                ...prev,
+                lastPicked: {
+                    name: selected.name,
+                    email: selected.email,
+                    photoUrl: selected.photoUrl
+                }
+            }));
+
             setIsPicking(false);
 
-            // Добавяме двойката в state (ако искаш да се вижда веднага)
-            setCoupled(prev => [
-                ...prev,
-                {
-                    giver: { name: user.name, email: user.email },
-                    receiver: selected
-                }
-            ]);
-
-            // Ако имаш бекенд за запис, можеш тук да го извикаш
-            // fetch('http://localhost:5000/api/save-coupled', ...)
-
-            // navigate('/profile'); // Можеш да го редиректнеш, ако желаеш
+            // Навигация към профила
+            navigate('/profile');
         }, 1000);
     };
+
+    if (loadingUser || !user) return <p>⏳ Зареждане...</p>;
 
     return (
         <div className="random-picker-container">
