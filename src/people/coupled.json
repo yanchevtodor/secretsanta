@@ -10,5 +10,17 @@
       "email": "r.yordanova@imotipremier.com",
       "photoUrl": "https://imotipremier.com/wp-content/uploads/radoslava-yordanova-broker-na-nedvijimi-imoti1005382-wf.jpg"
     }
+  },
+  {
+    "giver": {
+      "name": "Радослава Йорданова",
+      "email": "r.yordanova@imotipremier.com",
+      "photoUrl": "https://imotipremier.com/wp-content/uploads/radoslava-yordanova-broker-na-nedvijimi-imoti1005382-wf.jpg"
+    },
+    "receiver": {
+      "name": "Лидия Иванова",
+      "email": "l.ivanova@imotipremier.com",
+      "photoUrl": "https://imotipremier.com/wp-content/uploads/lidiya-ivanova-broker-na-nedvijimi-imoti1005352-wf.jpg"
+    }
   }
 ]

@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../UserContext';
 import { useNavigate } from 'react-router-dom';
-import peopleData from '../people/people.json';
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { app } from '../firebase';
+
+const db = getFirestore(app);
 
 const RandomPicker = () => {
     const { user, setUser, loadingUser } = useContext(UserContext);
@@ -14,24 +17,53 @@ const RandomPicker = () => {
 
     // Зареждаме хората
     useEffect(() => {
-        setPeople(peopleData);
-        setCoupled([]); // Ако имаш API, може да fetch-неш тук
+        const loadPeople = async () => {
+            try {
+                const peopleSnapshot = await getDocs(collection(db, 'people'));
+                const peopleList = peopleSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                setPeople(peopleList);
+
+                // Ако user няма id, добавяме го от списъка
+                if (user && !user.id) {
+                    const currentUser = peopleList.find(p => p.email === user.email && p.name === user.name);
+                    if (currentUser) {
+                        setUser(prev => ({ ...prev, id: currentUser.id }));
+                    }
+                }
+            } catch (err) {
+                console.error('Грешка при зареждане на хората:', err);
+            }
+        };
+        loadPeople();
+    }, [user, setUser]);
+
+    // Зареждаме вече изтеглените двойки
+    useEffect(() => {
+        const loadCoupled = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'coupled'));
+                const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setCoupled(list);
+            } catch (err) {
+                console.error('Грешка при зареждане на двойките:', err);
+            }
+        };
+        loadCoupled();
     }, []);
 
-    // Redirect към login ако няма user
     useEffect(() => {
-        if (!loadingUser && !user) {
-            navigate('/login');
-        }
+        if (!loadingUser && !user) navigate('/login');
     }, [user, loadingUser, navigate]);
 
     const pickRandomColleague = async () => {
-        if (!user) return;
+        if (!user?.id) return alert('Няма идентификатор за текущия потребител!');
 
-        const alreadyPickedEmails = coupled.map(c => c.receiver.email);
+        // Взема вече изтеглените receiverId-та от current user
+        const alreadyPicked = coupled.filter(c => c.giverId === user.id).map(c => c.receiverId);
 
         const availablePeople = people.filter(
-            p => p.email !== user.email && !alreadyPickedEmails.includes(p.email)
+            p => p.id !== user.id && !alreadyPicked.includes(p.id)
         );
 
         if (availablePeople.length === 0) {
@@ -45,49 +77,33 @@ const RandomPicker = () => {
             const randomIndex = Math.floor(Math.random() * availablePeople.length);
             const selected = availablePeople[randomIndex];
 
-            // Записваме само името и имейла
             const pair = {
-                giver: {
-                    name: user.name,
-                    email: user.email,
-                    photoUrl: user.photoUrl
-                },
-                receiver: {
-                    name: selected.name,
-                    email: selected.email,
-                    photoUrl: selected.photoUrl
-                }
+                giverId: user.id,
+                giverName: user.name,
+                giverEmail: user.email,
+                receiverId: selected.id,
+                receiverName: selected.name,
+                receiverEmail: selected.email
             };
 
             try {
-                await fetch('http://localhost:5000/api/save-coupled', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ pair })
-                });
+                await addDoc(collection(db, 'coupled'), pair);
+                setCoupled(prev => [...prev, pair]);
+                setRandomColleague(selected);
+
+                // Обновяваме user context с последно изтегления
+                setUser(prev => ({
+                    ...prev,
+                    lastPicked: { name: selected.name, email: selected.email, id: selected.id }
+                }));
+
+                setIsPicking(false);
+                navigate('/profile');
             } catch (err) {
-                console.error('Грешка при записа на двойката:', err);
+                console.error('Грешка при запис на двойката:', err);
+                setIsPicking(false);
             }
-
-            // Обновяваме локалния state
-            setCoupled(prev => [...prev, pair]);
-            setRandomColleague(selected);
-
-            // Обновяваме user с последния избран колега (само името и имейла)
-            setUser(prev => ({
-                ...prev,
-                lastPicked: {
-                    name: selected.name,
-                    email: selected.email,
-                    photoUrl: selected.photoUrl
-                }
-            }));
-
-            setIsPicking(false);
-
-            // Навигация към профила
-            navigate('/profile');
-        }, 1000);
+        }, 500);
     };
 
     if (loadingUser || !user) return <p>⏳ Зареждане...</p>;
@@ -95,7 +111,6 @@ const RandomPicker = () => {
     return (
         <div className="random-picker-container">
             <h2>Коледен Рандомайзер 🎅</h2>
-
             <button onClick={pickRandomColleague} disabled={isPicking}>
                 {isPicking ? 'Избирам...' : 'Изтегли Колега!'}
             </button>

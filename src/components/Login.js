@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({ name: '', email: '' });
@@ -8,14 +10,11 @@ const LoginForm = () => {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
-    // 🔹 Автоматично пренасочване, ако user вече е логнат
+    // Автоматично пренасочване, ако user вече е логнат
     useEffect(() => {
         if (user) {
-            if (user.role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/profile');
-            }
+            if (user.role === 'admin') navigate('/admin');
+            else navigate('/profile');
         }
     }, [user, navigate]);
 
@@ -29,42 +28,30 @@ const LoginForm = () => {
         e.preventDefault();
         setError('');
 
-        const name = formData.name.trim().toLowerCase();
+        const name = formData.name.trim();
         const email = formData.email.trim().toLowerCase();
 
         try {
-            // 🧠 Проверка за админ
-            if (name === 'тодор янчев' && email === 'admin@admin.com') {
-                setUser({ name: formData.name, email: formData.email, role: 'admin' });
+            // Проверка за админ
+            if (name.toLowerCase() === 'тодор янчев' && email === 'admin@admin.com') {
+                setUser({ name, email, role: 'admin' });
                 return;
             }
 
-            // 🔹 Зареждаме хората от API или локален fallback
-            let people = [];
-            try {
-                const res = await fetch('http://localhost:5000/api/people');
-                if (!res.ok) throw new Error('Server unavailable');
-                people = await res.json();
-            } catch {
-                const localPeople = await import('../people/people.json');
-                people = localPeople.default || localPeople;
-            }
+            // Създаваме ключ: name-email
+            const key = name.toLowerCase().replace(/\s+/g, '-') + '-' + email;
+            const docRef = doc(db, 'people', key);
+            const docSnap = await getDoc(docRef);
 
-            // 🔹 Проверка за съществуващ потребител
-            const exactUser = people.find(
-                p =>
-                    p.name.trim().toLowerCase() === name &&
-                    p.email.trim().toLowerCase() === email
-            );
-
-            if (!exactUser) {
+            if (!docSnap.exists()) {
                 setError('❌ Няма потребител с това име и имейл.');
                 return;
             }
 
-            // ✅ Влизаме успешно
-            setUser(exactUser);
+            const userData = docSnap.data();
+            setUser({ id: docSnap.id, ...userData });
             setFormData({ name: '', email: '' });
+
         } catch (err) {
             console.error('Грешка при проверката на потребителя:', err);
             setError('⚠️ Проблем при проверката. Опитайте пак.');

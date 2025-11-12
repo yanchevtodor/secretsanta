@@ -17,10 +17,9 @@ h3 {
 .profile-form-container,
 .random-picker-container,
 .admin-panel {
-  max-width: 90%;
-  margin: 40px auto;
+  margin: 10px 15px;
   background-color: #fff;
-  padding: 30px 25px;
+  padding: 25px 20px;
   border-radius: 15px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
@@ -46,7 +45,7 @@ label {
 input[type="text"],
 input[type="email"],
 textarea {
-  padding: 12px 15px;
+  padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 14px;
@@ -66,7 +65,7 @@ textarea {
 
 /* --- Бутони --- */
 button {
-  padding: 12px 20px;
+  padding: 10px 15px;
   border: none;
   border-radius: 10px;
   font-weight: 600;
@@ -104,7 +103,10 @@ button {
 .logout-button {
   background-color: #ef4444;
   color: #fff;
-  float: right;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 5px 10px;
 }
 
 .logout-button:hover {
@@ -122,10 +124,11 @@ button {
 }
 
 .profile-photo-small {
-  width: 70px;
-  height: 70px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  margin-bottom: 8px;
 }
 
 /* --- Карти с резултати --- */
@@ -135,80 +138,6 @@ button {
   padding: 20px;
   margin-top: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  text-align: center;
-}
-
-li p {
-  margin-left: 10px;
-}
-
-.admin-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 20px;
-}
-
-.admin-card {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  padding: 15px 25px;
-  gap: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-
-
-.person-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.profile-photo-small {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 8px;
-}
-
-.person-info .name {
-  font-weight: 600;
-  margin: 0;
-}
-
-.person-info .email {
-  font-size: 0.85rem;
-  color: #666;
-  margin: 0;
-}
-
-.gift-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gift-img {
-  width: 40px;
-  height: 40px;
-}
-
-.result-card h3 {
-  margin: 10px 0 5px 0;
-  color: #1e1e2f;
-}
-
-.result-card p {
-  font-size: 14px;
-  color: #555;
-  margin: 3px 0;
 }
 
 /* --- Заглавия секции --- */
@@ -220,48 +149,178 @@ li p {
   color: #1e1e2f;
 }
 
-/* --- Админ таблица --- */
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
+/* --- Админ панели --- */
+.admin-panel {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.admin-table th,
-.admin-table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e5e7eb;
-  text-align: left;
-  font-size: 14px;
-}
-
-.admin-table th {
-  background-color: #f3f4f6;
-  font-weight: 600;
-}
-
-ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-ul li {
-  padding: 8px 0;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
+.admin-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-/* --- Текст за грешки --- */
-.error-message {
-  color: #ef4444;
-  font-size: 13px;
-  margin-top: -5px;
-  margin-bottom: 10px;
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  border-bottom: 2px solid #ccc;
 }
 
-section.admin-section {
-  display: inline-block;
-  width: 50%;
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
+  margin-right: 5px;
+}
+
+.tabs button.active {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.tab-content {
+  padding: 10px 0;
+}
+
+/* --- Карти двойки --- */
+.admin-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.admin-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  gap: 15px;
+  width: 100%;
+}
+
+.person-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.person-card .person-info {
+  margin-top: 5px;
+}
+
+.gift-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+}
+
+.gift-img {
+  width: 30px;
+  height: 30px;
+}
+
+/* --- Списъци хора --- */
+.person-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.person-item input {
+  padding: 5px;
+}
+
+.draw-section .result-card {
+  text-align: right;
+}
+
+.pair {
+  display: flex;
+  justify-content: space-around;
+}
+
+.person-item input:disabled {
+  border: none;
+}
+
+/* --- Медия заявки за responsive --- */
+@media (max-width: 768px) {
+  .admin-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .person-card {
+    flex-direction: row;
+    text-align: left;
+    gap: 10px;
+  }
+
+  .person-card .person-info {
+    margin-top: 0;
+  }
+
+  .gift-container {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 10px 0;
+  }
+
+  .person-item input {
+    width: 100%;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tabs button {
+    margin-bottom: 5px;
+  }
+
+  .admin-section {
+    width: 100%;
+  }
+
+  .profile-photo-small {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-photo-small {
+    width: 40px;
+    height: 40px;
+  }
+
+  .admin-card {
+    padding: 8px;
+  }
+
+  button {
+    padding: 8px 12px;
+  }
+
+  .tabs button {
+    padding: 8px 10px;
+  }
 }

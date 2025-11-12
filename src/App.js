@@ -14,6 +14,7 @@ function App() {
     <UserProvider>
       <Router>
         <div className="App">
+          <img src="/imotipremier-logo.png" alt="logo" className="logo" />
           <header className="App-header">
             <Routes>
               <Route path="/" element={<LoginForm />} />
