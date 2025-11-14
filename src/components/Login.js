@@ -60,14 +60,21 @@ const LoginForm = () => {
 
     return (
         <div className="login-form-container">
-            <h3>Вход</h3>
+
+            <div className='info'>
+                <h3>Добре дошли</h3>
+                <p>Моля попълнете две имена и служебният си имейл</p>
+            </div>
+            <br />
             <form onSubmit={handleSubmit} className="form-style">
                 <div className="form-group">
                     <label>Име:</label>
                     <input
+                        type='text'
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
+                        placeholder='Име и Фамилия'
                         required
                     />
                 </div>
@@ -77,6 +84,7 @@ const LoginForm = () => {
                         type="email"
                         name="email"
                         value={formData.email}
+                        placeholder='example@imotipremier.com'
                         onChange={handleChange}
                         required
                     />

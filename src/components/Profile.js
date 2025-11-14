@@ -95,7 +95,7 @@ const ProfileForm = () => {
     };
 
     if (!user) return <h3>⚠️ Моля, влез в системата първо!</h3>;
-    if (loading || !profileData) return <p>⏳ Зареждане на профила...</p>;
+    if (loading || !profileData) return <p className='loading'>⏳ Зареждане на профила...</p>;
 
     return (
         <div className="profile-form-container">
@@ -129,18 +129,21 @@ const ProfileForm = () => {
                                     value={profileData.preferredGift}
                                     onChange={handleChange}
                                     placeholder="Подарък..."
+                                    type='text'
                                 />
                                 <textarea
                                     name="hobbies"
                                     value={profileData.hobbies}
                                     onChange={handleChange}
                                     placeholder="Хобита..."
+                                    type='text'
                                 />
                                 <textarea
                                     name="interests"
                                     value={profileData.interests}
                                     onChange={handleChange}
                                     placeholder="Интереси..."
+                                    type='text'
                                 />
                                 <button onClick={handleSave}>💾 Запази</button>
                                 <button onClick={() => setIsEditing(false)}>❌ Откажи</button>
@@ -152,7 +155,7 @@ const ProfileForm = () => {
                     <img src="/Gift_Box_in_Red_PNG_Clipart-276.png" alt="Gift" className="gift-img" />
                 </div>
                 <section className="draw-section">
-                    <h3>🎅 Моят коледен колега</h3>
+                    <h3>Моят коледен колега</h3>
                     {drawResult ? (
                         <div className="result-card">
                             <img

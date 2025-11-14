@@ -10,12 +10,48 @@ import RandomPicker from './components/RandomPicker';
 import AdminPanel from './components/AdminPanel';
 
 function App() {
+
   return (
     <UserProvider>
+
       <Router>
+        <div class="snowflakes" aria-hidden="true">
+          <div class="snowflake">
+            ❅
+          </div>
+          <div class="snowflake">
+            ❅
+          </div>
+          <div class="snowflake">
+            ❆
+          </div>
+          <div class="snowflake">
+            ❄
+          </div>
+          <div class="snowflake">
+            ❅
+          </div>
+          <div class="snowflake">
+            ❆
+          </div>
+          <div class="snowflake">
+            ❄
+          </div>
+          <div class="snowflake">
+            ❅
+          </div>
+          <div class="snowflake">
+            ❆
+          </div>
+          <div class="snowflake">
+            ❄
+          </div>
+        </div>
         <div className="App">
-          <img src="/imotipremier-logo.png" alt="logo" className="logo" />
           <header className="App-header">
+            <img src="/imotipremier-logo.png" alt="logo" className="logo" />
+          </header>
+          <main>
             <Routes>
               <Route path="/" element={<LoginForm />} />
               <Route path="/login" element={<LoginForm />} />
@@ -48,10 +84,12 @@ function App() {
                 }
               />
             </Routes>
-          </header>
+          </main>
         </div>
+
       </Router>
     </UserProvider>
+
   );
 }
 

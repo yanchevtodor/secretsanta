@@ -136,11 +136,12 @@ const AdminPanel = () => {
                                         </div>
 
                                         <div className="person-card">
+                                            <img src={getPhoto(pair.receiverId)} alt={pair.receiverName} className="profile-photo-small" />
                                             <div className="person-info">
                                                 <p className="name">{pair.receiverName}</p>
                                                 <p className="email">{pair.receiverEmail}</p>
                                             </div>
-                                            <img src={getPhoto(pair.receiverId)} alt={pair.receiverName} className="profile-photo-small" />
+
                                         </div>
                                     </div>
                                 ))}

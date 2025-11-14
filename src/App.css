@@ -12,16 +12,66 @@ h3 {
   color: #1e1e2f;
 }
 
-/* --- Контейнери --- */
-.login-form-container,
-.profile-form-container,
-.random-picker-container,
+p.loading {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding: 17px;
+  width: 80%;
+  border-radius: 10px;
+  background: #4ab34a;
+  color: white;
+  text-shadow: 2px 2px 5px black;
+}
+
+header.App-header {
+  text-align: center;
+  padding: 15px 0px 0px 0px;
+}
+
+.info {
+  text-align: center;
+}
+
+.login-form-container {
+  margin: 10px auto;
+  background-color: #fff;
+  padding: 15px 20px 20px 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+}
+
 .admin-panel {
-  margin: 10px 15px;
+  margin: 10px auto;
   background-color: #fff;
   padding: 25px 20px;
   border-radius: 15px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+}
+
+.random-picker-container {
+  margin: 10px auto;
+  background-color: #fff;
+  padding: 25px 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+}
+
+.draw-section h3 {
+  text-align: right;
+}
+
+.profile-form-container {
+  margin: 10px auto;
+  background-color: #fff;
+  padding: 25px 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  width: 800px;
+  max-width: 90%;
 }
 
 /* --- Формуляри --- */
@@ -42,6 +92,10 @@ label {
   color: #555;
 }
 
+main {
+  padding: 0 0 20px 0px;
+}
+
 input[type="text"],
 input[type="email"],
 textarea {
@@ -50,6 +104,7 @@ textarea {
   border-radius: 10px;
   font-size: 14px;
   transition: border 0.2s;
+  box-shadow: 2px 5px 17px 0px rgb(0 0 0 / 12%) !important;
 }
 
 input:focus,
@@ -74,12 +129,16 @@ button {
 }
 
 .submit-button {
-  background-color: #5a67f2;
-  color: #fff;
+  background-color: #FFDC62;
+  color: black;
+  border: .1rem solid #FFDC62;
+  box-shadow: 2px 5px 17px 0px rgba(0, 0, 0, 0.19) !important;
 }
 
 .submit-button:hover {
-  background-color: #434aa8;
+  background: rgb(97 38 114 / .7);
+  border: .1rem solid #D2D2D2;
+  color: #fff;
 }
 
 .cancel-button {
@@ -116,19 +175,24 @@ button {
 /* --- Профилни снимки --- */
 .profile-photo {
   width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  height: 150px;
+  border-radius: 10px;
   object-fit: cover;
   margin-bottom: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .profile-photo-small {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 50px;
+  height: 60px;
+  border-radius: 10px;
   object-fit: cover;
   margin-bottom: 8px;
+}
+
+.App {
+  background: #3D1A57;
+  min-height: 100vh;
 }
 
 /* --- Карти с резултати --- */
@@ -138,6 +202,7 @@ button {
   padding: 20px;
   margin-top: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 310px;
 }
 
 /* --- Заглавия секции --- */
@@ -193,6 +258,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+
 }
 
 .admin-card {
@@ -203,6 +269,7 @@ button {
   border-radius: 8px;
   padding: 10px;
   gap: 15px;
+  justify-content: space-around;
   width: 100%;
 }
 
@@ -225,8 +292,8 @@ button {
 }
 
 .gift-img {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
 }
 
 /* --- Списъци хора --- */
@@ -263,6 +330,22 @@ button {
     align-items: flex-start;
   }
 
+  .profile-form-container {
+    max-width: 80%;
+  }
+
+  .pair .result-card {
+    text-align: center !important;
+  }
+
+  h3 {
+    text-align: center !important;
+  }
+
+  .pair {
+    display: block;
+  }
+
   .person-card {
     flex-direction: row;
     text-align: left;
@@ -275,7 +358,6 @@ button {
 
   .gift-container {
     width: 100%;
-    justify-content: flex-start;
     margin: 10px 0;
   }
 
@@ -297,19 +379,17 @@ button {
 
   .profile-photo-small {
     width: 50px;
-    height: 50px;
+    height: 60px;
+
   }
 }
 
 @media (max-width: 480px) {
-  .profile-photo {
-    width: 100px;
-    height: 100px;
-  }
+
 
   .profile-photo-small {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 60px;
   }
 
   .admin-card {
@@ -323,4 +403,177 @@ button {
   .tabs button {
     padding: 8px 10px;
   }
+}
+
+.profile-edit input[type="text"] {
+  display: block;
+  width: 80%;
+  max-width: 200px;
+}
+
+.profile-edit textarea[type="text"] {
+  display: block;
+  width: 80%;
+  max-width: 200px;
+}
+
+
+.intro,
+.intro a {
+  color: #fff;
+}
+
+/* customizable snowflake styling */
+.snowflake {
+  color: #fff;
+  font-size: 1em;
+  font-family: Arial;
+  text-shadow: 0 0 1px #000;
+}
+
+@-webkit-keyframes snowflakes-fall {
+  0% {
+    top: -10%
+  }
+
+  100% {
+    top: 100%
+  }
+}
+
+@-webkit-keyframes snowflakes-shake {
+  0% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px)
+  }
+
+  50% {
+    -webkit-transform: translateX(80px);
+    transform: translateX(80px)
+  }
+
+  100% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px)
+  }
+}
+
+@keyframes snowflakes-fall {
+  0% {
+    top: -10%
+  }
+
+  100% {
+    top: 100%
+  }
+}
+
+@keyframes snowflakes-shake {
+  0% {
+    transform: translateX(0px)
+  }
+
+  50% {
+    transform: translateX(80px)
+  }
+
+  100% {
+    transform: translateX(0px)
+  }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10%;
+  z-index: 9999;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  -webkit-animation-name: snowflakes-fall, snowflakes-shake;
+  -webkit-animation-duration: 10s, 3s;
+  -webkit-animation-timing-function: linear, ease-in-out;
+  -webkit-animation-iteration-count: infinite, infinite;
+  -webkit-animation-play-state: running, running;
+  animation-name: snowflakes-fall, snowflakes-shake;
+  animation-duration: 10s, 3s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-play-state: running, running
+}
+
+.snowflake:nth-of-type(0) {
+  left: 1%;
+  -webkit-animation-delay: 0s, 0s;
+  animation-delay: 0s, 0s
+}
+
+.snowflake:nth-of-type(1) {
+  left: 10%;
+  -webkit-animation-delay: 1s, 1s;
+  animation-delay: 1s, 1s
+}
+
+.snowflake:nth-of-type(2) {
+  left: 20%;
+  -webkit-animation-delay: 6s, .5s;
+  animation-delay: 6s, .5s
+}
+
+.snowflake:nth-of-type(3) {
+  left: 30%;
+  -webkit-animation-delay: 4s, 2s;
+  animation-delay: 4s, 2s
+}
+
+.snowflake:nth-of-type(4) {
+  left: 40%;
+  -webkit-animation-delay: 2s, 2s;
+  animation-delay: 2s, 2s
+}
+
+.snowflake:nth-of-type(5) {
+  left: 50%;
+  -webkit-animation-delay: 8s, 3s;
+  animation-delay: 8s, 3s
+}
+
+.snowflake:nth-of-type(6) {
+  left: 60%;
+  -webkit-animation-delay: 6s, 2s;
+  animation-delay: 6s, 2s
+}
+
+.snowflake:nth-of-type(7) {
+  left: 70%;
+  -webkit-animation-delay: 2.5s, 1s;
+  animation-delay: 2.5s, 1s
+}
+
+.snowflake:nth-of-type(8) {
+  left: 80%;
+  -webkit-animation-delay: 1s, 0s;
+  animation-delay: 1s, 0s
+}
+
+.snowflake:nth-of-type(9) {
+  left: 90%;
+  -webkit-animation-delay: 3s, 1.5s;
+  animation-delay: 3s, 1.5s
+}
+
+/* Demo Purpose Only*/
+.demo {
+  font-family: 'Raleway', sans-serif;
+  color: #fff;
+  display: block;
+  margin: 0 auto;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.demo a {
+  font-family: 'Raleway', sans-serif;
+  color: #000;
 }
